@@ -18,7 +18,9 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
+    "echarts": "^4.8.0",
     "nuxt": "^2.0.0",
+    "v-charts": "^1.19.0",
     "vuex-persist": "^2.2.0"
   },
   "devDependencies": {

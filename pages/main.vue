@@ -1,10 +1,10 @@
 <template>
   <v-app id="inspire">
     <v-app-bar flat>
-      <v-img src="/logo2.png" alt="logarden" max-width="100px"/>
+      <v-img src="/logo2.png" alt="logarden" max-width="100px" />
       <v-text-field
-        :value="queryString"
-        @change="queryString = $event"
+        :value="queryWhere"
+        @change="queryWhere = $event"
         @keydown.enter="runQuery()"
         @keydown.esc="runQuery()"
         flat
@@ -21,6 +21,8 @@
       </v-btn>
     </v-app-bar>
     <v-main>
+      Count: {{ logs.meta.count }}
+      <histogram :data="logs.meta.histogram" />
       <v-data-table
         :headers="headers"
         :items="logs.data"
@@ -35,21 +37,25 @@
 
 <script>
   import { mapState, mapActions, mapMutations } from 'vuex'
+  import Histogram from '~/components/Histogram.vue'
 
   export default {
+    components: {
+      Histogram
+    },
     layout: 'empty',
     computed: {
       ...mapState(['logs']),
-      queryString: {
+      queryWhere: {
         get () {
-          return this.$store.state.queryString
+          return this.$store.state.queryWhere
         },
         set (value) {
-          this.setQueryString(value)
+          this.setQueryWhere(value)
         }
       },
       headers () {
-        return this.logs.meta
+        return this.logs.meta.columns
           .filter(x => ['timestamp', 'user', 'ip', 'route', 'eventName'].includes(x.name))
           .map(x => ({
             text: x.name,
@@ -58,13 +64,13 @@
       }
     },
     async fetch () {
-      await this.query(`select * from events where ${this.queryString || 1} limit 1000`)
+      await this.query()
     },
     methods: {
       ...mapActions(['query']),
-      ...mapMutations(['setQueryString']),
+      ...mapMutations(['setQueryWhere']),
       async runQuery () {
-        await this.query(`select * from events where ${this.queryString || 1} limit 1000`)
+        await this.query(this.queryWhere)
       }
     }
   }
