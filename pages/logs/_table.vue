@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-app-bar flat>
-      <v-img src="~/static/logo2.png" alt="logarden" max-width="100px" />
+      <v-img :src="require('~/static/logo2.png')" alt="logarden" max-width="100px" />
       <v-text-field
         :value="queryWhere"
         @change="queryWhere = $event"
