@@ -1,8 +1,8 @@
 <template>
   <ve-line
     :data="chartData"
-    :data-zoom="dataZoom">
-  </ve-line>
+    :data-zoom="dataZoom"
+  />
 </template>
 
 <script>

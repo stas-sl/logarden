@@ -21,13 +21,17 @@
       </v-btn>
       <v-menu offset-y bottom nudge-bottom="15">
         <template v-slot:activator="{ on, attrs }">
-          <v-icon v-bind="attrs" v-on="on" class="ml-3">mdi-calendar-clock</v-icon>
+          <v-icon v-bind="attrs" v-on="on" class="ml-3">
+            mdi-calendar-clock
+          </v-icon>
         </template>
         <v-card class="d-flex">
-          <v-list dense class="d-flex flex-column" v-for="periodColumn in quickTimestampRanges">
-            <v-list-item v-for="period in periodColumn">
+          <v-list v-for="(periodColumn, index) in quickTimestampRanges" :key="index" dense class="d-flex flex-column">
+            <v-list-item v-for="period in periodColumn" :key="period.title">
               <v-list-item-content>
-                <v-btn text small max-width="150" @click="changeTimestampRange(period)">{{ period.title }}</v-btn>
+                <v-btn @click="changeTimestampRange(period)" text small max-width="150">
+                  {{ period.title }}
+                </v-btn>
               </v-list-item-content>
             </v-list-item>
           </v-list>

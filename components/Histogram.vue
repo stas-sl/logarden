@@ -27,7 +27,12 @@
 
   export default {
     components: { VeBar },
-    props: ['data'],
+    props: {
+      data: {
+        type: Array,
+        default: null
+      }
+    },
     computed: {
       chartData () {
         return {
