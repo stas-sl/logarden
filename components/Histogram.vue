@@ -5,23 +5,19 @@
       :data="chartData"
       :legend-visible="false"
       :title-visible="true"
-      height1="300px"
       :brush="{
-       xAxisIndex: 'all',
-       // throttleType: 'debounce',
-       // throttleDelay: 100,
-       outOfBrush: {
-               colorAlpha: 1
-       },
-       inBrush: {
-               colorAlpha: .3
-       }}"
-      @ready="ready"
-      :events="{
-        rendered: rendered,
+        xAxisIndex: 'all',
+        throttleType: 'debounce',
+        throttleDelay: 100,
+        outOfBrush: {
+          colorAlpha: 1
+        },
+        inBrush: {
+          colorAlpha: .3
+        }
       }"
+      @ready="ready"
     />
-    <v-btn @click="click">x</v-btn>
   </div>
 </template>
 
@@ -32,17 +28,6 @@
   export default {
     components: { VeBar },
     props: ['data'],
-    mounted () {
-      const e = this.$refs.chart.echarts
-      e.dispatchAction({
-        type: 'takeGlobalCursor',
-        key: 'brush',
-        brushOption: {
-          brushType: 'lineX',
-          brushMode: 'single'
-        }
-      })
-    },
     computed: {
       chartData () {
         return {
@@ -51,25 +36,7 @@
         }
       }
     },
-    // watch: {
-    //   data () {
-    //     setTimeout(() => {
-    //       const e = this.$refs.chart.echarts
-    //       e.dispatchAction({
-    //         type: 'takeGlobalCursor',
-    //         key: 'brush',
-    //         brushOption: {
-    //           brushType: 'lineX',
-    //           brushMode: 'single'
-    //         }
-    //       })
-    //     }, 1)
-    //   }
-    // },
     methods: {
-      rendered () {
-        console.log('rendered')
-      },
       ready () {
         const e = this.$refs.chart.echarts
         e.dispatchAction({
@@ -80,25 +47,6 @@
             brushMode: 'single'
           }
         })
-      },
-      click () {
-        // console.log(this.$refs.echart)
-        // e.on('brushEnd', function (param) {
-        //   console.log(param)
-        // })
-        // e.dispatchAction({
-        //   type: 'takeGlobalCursor',
-        // key: 'dataZoomSelect',
-        // dataZoomSelectActive: true
-        // })
-        // e.dispatchAction({
-        //   type: 'takeGlobalCursor',
-        //   key: 'brush',
-        //   brushOption: {
-        //     brushType: 'lineX',
-        //     brushMode: 'single'
-        //   }
-        // })
       }
     }
   }

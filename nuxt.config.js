@@ -32,6 +32,7 @@ export default {
   */
   plugins: [
     { src: '~/plugins/vuex-persist', ssr: false }
+    // { src: '~/plugins/vuetify', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -87,5 +88,8 @@ export default {
     // }
   },
 
-  ...routerBase
+  ...routerBase,
+  generate: {
+    fallback: true
+  }
 }
