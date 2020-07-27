@@ -26,13 +26,15 @@ export default {
   /*
   ** Global CSS
   */
-  css: [],
+  css: [
+    'assets/main.scss'
+  ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '~/plugins/vuex-persist', ssr: false }
-    // { src: '~/plugins/vuetify', ssr: false }
+    { src: '~/plugins/vuex-persist' },
+    { src: '~/plugins/vue-shortkey' }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -67,6 +69,15 @@ export default {
       themes: {
         dark: {
           primary: colors.blue.darken2,
+          accent: colors.grey.darken3,
+          secondary: colors.amber.darken3,
+          info: colors.teal.lighten1,
+          warning: colors.amber.base,
+          error: colors.deepOrange.accent4,
+          success: colors.green.accent3
+        },
+        light: {
+          primary: colors.shades.black,
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,

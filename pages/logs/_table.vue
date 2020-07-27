@@ -1,12 +1,15 @@
 <template>
-  <v-app id="inspire">
+  <v-container fluid pa-0>
     <v-app-bar flat>
       <v-img :src="require('~/static/logo2.png')" alt="logarden" max-width="100px" />
       <v-text-field
+        ref="searchInput"
         :value="queryWhere"
         @change="queryWhere = $event"
         @keydown.enter="runQuery()"
-        @keydown.esc="runQuery()"
+        @keydown.esc="$event.target.blur()"
+        v-shortkey="['/']"
+        @shortkey.native="focusSearch()"
         flat
         filled
         single-line
@@ -15,15 +18,18 @@
         prepend-inner-icon="mdi-magnify"
         label="Search"
         class="ml-3 search-input"
+        placeholder="Search (press '/' to focus)"
       />
       <v-btn @click="runQuery()" depressed color="primary" class="ml-5">
         Go
       </v-btn>
       <v-menu offset-y bottom nudge-bottom="15">
         <template v-slot:activator="{ on, attrs }">
-          <v-icon v-bind="attrs" v-on="on" class="ml-3">
-            mdi-calendar-clock
-          </v-icon>
+          <v-btn v-bind="attrs" v-on="on" icon class="ml-2">
+            <v-icon>
+              mdi-calendar-clock
+            </v-icon>
+          </v-btn>
         </template>
         <v-card class="d-flex">
           <v-list v-for="(periodColumn, index) in quickTimestampRanges" :key="index" dense class="d-flex flex-column">
@@ -35,6 +41,28 @@
               </v-list-item-content>
             </v-list-item>
           </v-list>
+        </v-card>
+      </v-menu>
+      <v-btn icon to="/settings">
+        <v-badge
+          dot
+          color="red"
+        >
+          <v-icon>
+            mdi-cog
+          </v-icon>
+        </v-badge>
+      </v-btn>
+      <v-menu offset-y bottom nudge-bottom="15">
+        <!--        <template v-slot:activator="{ on, attrs }">-->
+        <!--          <v-btn v-bind="attrs" v-on="on" icon class="ml-2">-->
+        <!--            <v-icon>-->
+        <!--              mdi-calendar-clock-->
+        <!--            </v-icon>-->
+        <!--          </v-btn>-->
+        <!--        </template>-->
+        <v-card class="d-flex">
+          onboarding
         </v-card>
       </v-menu>
     </v-app-bar>
@@ -50,7 +78,7 @@
         }"
       />
     </v-main>
-  </v-app>
+  </v-container>
 </template>
 
 <script>
@@ -135,16 +163,23 @@
         this.setStartTimestamp(range.start)
         this.setEndTimestamp(range.end)
         await this.runQuery()
+      },
+      focusSearch () {
+        this.$refs.searchInput.focus()
       }
     }
   }
 </script>
-<style>
+<style scoped>
   .v-toolbar {
     background-color: white !important;
   }
 
   .search-input {
     background-color: #eee !important;
+  }
+
+  .search-input .input {
+    background-color: transparent;
   }
 </style>
