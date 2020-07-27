@@ -44,14 +44,16 @@
         </v-card>
       </v-menu>
       <v-btn icon to="/settings">
-        <v-badge
-          dot
-          color="red"
-        >
+        <v-badge dot color="red">
           <v-icon>
             mdi-cog
           </v-icon>
         </v-badge>
+      </v-btn>
+      <v-btn icon href="https://github.com/stas-sl/logarden/" target="_blank">
+        <v-icon>
+          mdi-github
+        </v-icon>
       </v-btn>
       <v-menu offset-y bottom nudge-bottom="15">
         <!--        <template v-slot:activator="{ on, attrs }">-->
