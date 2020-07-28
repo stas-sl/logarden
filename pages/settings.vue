@@ -65,6 +65,9 @@
               </v-list-item-content>
             </v-list-item>
           </v-list>
+          <v-btn @click="clearLocalStorage()">
+            Clear localStore
+          </v-btn>
         </v-card>
       </v-col>
     </v-row>
@@ -85,6 +88,9 @@
     methods: {
       close () {
         this.$router.back()
+      },
+      clearLocalStorage () {
+        localStorage.removeItem('vuex')
       }
     }
   }
