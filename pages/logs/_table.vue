@@ -78,6 +78,9 @@
         :footer-props="{
           itemsPerPageOptions: [20, 50, 100, 1000, -1]
         }"
+        :server-items-length="logs.meta.count"
+        :options.sync="options"
+        @update:options="runQuery()"
       />
     </v-main>
   </v-container>
@@ -94,6 +97,7 @@
     layout: 'empty',
     data () {
       return {
+        options: null,
         quickTimestampRanges: [
           [
             { title: 'Today', start: 'today()', end: 'today() + interval 1 day' },
@@ -158,6 +162,10 @@
       async runQuery () {
         await this.query({
           queryWhere: this.queryWhere,
+          page: this.options.page,
+          limit: this.options.itemsPerPage,
+          sortBy: this.options.sortBy,
+          sortDesc: this.options.sortDesc,
           startTimestamp: this.startTimestamp,
           endTimestamp: this.endTimestamp
         })

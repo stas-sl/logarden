@@ -44,7 +44,7 @@ const createStore = () => {
     },
     actions: {
       async query ({ state, commit, dispatch },
-        { queryWhere, limit, startTimestamp, endTimestamp }) {
+        { queryWhere, startTimestamp, endTimestamp, page, limit, sortBy, sortDesc }) {
         queryWhere = queryWhere || '1'
         if (startTimestamp) {
           queryWhere = `(${queryWhere}) and toDateTime(${state.connection.timestampField}) >= ${startTimestamp}`
@@ -52,12 +52,22 @@ const createStore = () => {
         if (endTimestamp) {
           queryWhere = `(${queryWhere}) and toDateTime(${state.connection.timestampField}) <= ${endTimestamp}`
         }
-        queryWhere = ' prewhere ' + queryWhere
-        limit = ` limit ${limit || 100} `
+        queryWhere = 'prewhere' + queryWhere
+        if (!limit) {
+          limit = 100
+        }
+        if (!page) {
+          page = 0
+        }
+        limit = `limit ${page * limit}, ${limit}`
+        let orderBy = `order by ${state.connection.timestampField} desc`
+        if (sortBy && sortBy.length > 0) {
+          orderBy = `order by ${sortBy[0]} ${sortDesc ? 'desc' : ''}`
+        }
         const queryFull = `select * from ${state.connection.table}` +
-          `${queryWhere} order by ${state.connection.timestampField} desc ${limit}`
+          ` ${queryWhere} ${orderBy} ${limit}`
         const queryHistogram = `select toStartOfInterval((${state.connection.timestampField}), interval 3 hour) as date, count(*) as count from ${state.connection.table}` +
-          `${queryWhere} group by date with totals order by date`
+          ` ${queryWhere} group by date with totals order by date`
         const [respHistogram, respData] = await Promise.all([
           dispatch('queryInner', queryHistogram),
           dispatch('queryInner', queryFull)
@@ -65,7 +75,7 @@ const createStore = () => {
         commit('setLogs', {
           data: respData.data,
           meta: {
-            count: respHistogram.totals.count,
+            count: parseInt(respHistogram.totals.count),
             columns: respData.meta,
             histogram: respHistogram.data.map(x => ({
               date: new Date(Date.parse(x.date)),
