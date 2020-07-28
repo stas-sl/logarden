@@ -141,7 +141,8 @@
       },
       headers () {
         return this.logs.meta.columns
-          .filter(x => ['timestamp', 'user', 'ip', 'route', 'eventName', '__row_id'].includes(x.name))
+          // .filter(x => ['timestamp', 'user', 'ip', 'route', 'eventName'].includes(x.name))
+          // .filter(x => ['UTCStartTime', 'user', 'ip', 'route', 'eventName'].includes(x.name))
           .map(x => ({
             text: x.name,
             value: x.name
